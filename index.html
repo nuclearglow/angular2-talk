@@ -1,0 +1,801 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Frontend Development with Angular 2</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- my presentation slides style fixes -->
+		<link rel="stylesheet" href="css/fixes.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+
+				<!-- Any section element inside of this container is displayed as a slide -->
+		<div class="slides">
+			<section>
+				<h3>Web frontend development with TypeScript + Angular2</h3>
+				<p>
+					<small><a href="http://cofinpro.de">Cofinpro</a> / <a href="mailto:svenvowe@gmail.com">Sven Vowé</a></small>
+				</p>
+                <p>
+                    Connect to Slides: <a href="http://172.29.21.141:1947/">http://172.29.21.141:1947/</a>
+                </p>
+			</section>
+
+			<section>
+				<h3>Overview</h3>
+				<ul>
+					<li>Why AngularJS?</li>
+					<li>AngularJS in a nutshell</li>
+					<li>TypeScript in a nutshell</li>
+					<li>Angular 2 Overview</li>
+					<li>Angular 2 Components</li>
+					<li>Angular 2 Data bindings</li>
+					<li>Angular 2 Core Features</li>
+					<li>Angular 2 Quo vadis?</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Prelude: Classic Web Applications</h3>
+				<img width="auto" height="80%" src="images/3tier-server-centric.png">
+			</section>
+
+			<section>
+				<h3>Why AngularJS ?</h3>
+				<p class="fragment">2009: When using classic server-side web application frameworks, "frontend development" usually meant:</p>
+				<ul class="fragment">
+					<li>Bunch of HTML files</li>
+					<li>One or more SCSS/CSS files</li>
+					<li>A bunch of JS files: "interactive DOM" + AJAX</li>
+					<li>Some files of JS libs i.e. JQuery</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Why AngularJS ?</h3>
+				<blockquote>
+					&ldquo;AngularJS is a frontend framework to build dynamic web applications. Developers are expected to follow certain rules derived from strong design principles. This allows encapsulating a lot of internal complexity and simplifies development.&rdquo;
+					</blockquote>
+			</section>
+
+			<section>
+				<h3>Why AngularJS ?</h3>
+				<img width="auto" height="80%" data-src="./images/3tier-angular.png">
+			</section>
+
+			<section>
+				<h3>AngularJS in a nutshell</h3>
+				<h4>Separation of concerns: Model View Whatever</h4>
+				<ul class="fragment">
+					<li>Model = JS Objects</li>
+					<li>View = HTML Template</li>
+					<li>Whatever = App Logic and View Data Binding</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>AngularJS in a nutshell</h3>
+				<h4>Reactivity: Double Data Binding</h4>
+				<ul class="fragment">
+					<li>HTML Template engine included</li>
+					<li>Live variable binding of view and controller</li>
+					<li>User interaction triggers update</li>
+					<li>Data-bindings are automatically updated (<i>digest cycle</i>)
+				</ul>
+			</section>
+
+			<section>
+				<h3>AngularJS in a nutshell</h3>
+				<h4>Reusability: Modules</h4>
+				<ul class="fragment">
+					<li><i>Services</i>: Encapsulate logic to be used in any controller</li>
+					<li><i>Constants</i>: Define static data application wide or per controller</li>
+					<li><i>Directives</i>: Reusable Code: HTML Template + JS Logic</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>AngularJS in a nutshell</h3>
+				<h4>Reusability: Dependency Injection</h4>
+				<ul class="fragment">
+					<li>All modules inject needed dependencies</li>
+					<li>Inject anything without knowledge where or how it is implemented</li>
+					<li>Injector as a module: dynamic injections</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>AngularJS in a nutshell</h3>
+				<h4>Show me!</h4>
+				<pre>Template</pre>
+				<pre><code class="hljs html" data-trim>
+<div class="row h-tac" ng-controller="SimpleCtrl">
+    <h1>Hallo {{ user.firstName }} {{ user.lastName }}</h1>
+</div>
+				</code></pre>
+				<pre>Controller</pre>
+				<pre><code class=" javascript hljs" data-trim>
+angular.controller('SimpleCtrl', simpleCtrl);
+
+simpleCtrl.$inject([ $scope ]);
+
+function simpleCtrl($scope) {
+	$scope.user = {
+		firstName: 'Sven',
+		lastName: 'Vowé'
+	};
+}
+			</code></pre>
+			</section>
+
+			<section>
+				<h3>AngularJS in a nutshell</h3>
+				<h4>Convenience: Included Directives (overview)</h4>
+				<ul class="fragment">
+					<li>Core directives: overwrites HTML Tags for dynamic behaviour</li>
+					<li>Form directives: overwrites HTML Form elements for dynamic behaviour</li>
+					<li>Display directives: dynamic CSS class logic</li>
+					<li>Event directives: enhanced event handling</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>AngularJS in a nutshell</h3>
+				<h4>Convenience: Included Services (excerpt)</h4>
+				<ul class="fragment">
+					<li>$http: AJAX / REST-Client</li>
+					<li>$filter: data transformation</li>
+					<li>$locale: basic i18n support</li>
+					<li>$rootScope: Application-wide state</li>
+					<li>$timeout: JS event loop asynchronity support</li>
+					<li>$q: Asynchronous Promise support</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>AngularJS in a nutshell</h3>
+				<h4>Extensibility: Third-Party Addons</h4>
+				<ul class="fragment">
+					<li>angular-translate: full i18n support</li>
+					<li>angular-nvd3: SVG chart library</li>
+					<li>angular-mocks: Unit testing mock support</li>
+					<li>...</li>
+				</ul>
+			</section>
+
+			<section>
+				<section>
+					<h3>TypeScript in a nutshell</h3>
+					<h4>JS is so Evil? Tell me the Cons?</h4>
+					<ul class="fragment">
+						<li>incoherent typing</li>
+						<li>unintuitive context</li>
+						<li>no modularity</li>
+						<li>weak standard library</li>
+					</ul>
+				</section>
+				<section>
+					<p>Incoherent typing ?</p>
+					<pre><code class=" javascript hljs" data-trim>
+var a = new Array();
+>> []
+a[0] = 'item';
+>> [ 'item' ]
+a['1'] = 'anotheritem';
+>> [ 'item', 'anotheritem' ]
+a.item = 'wtf?'
+>> [ 'item', 'anotheritem' ]
+a.item
+>> 'wtf?'
+				</code></pre>
+				</section>
+			</section>
+			<section>
+				<h3>TypeScript in a nutshell</h3>
+				<p>What is TypeScript ?</p>
+				<p>TypeScript is a superset of JavaScript.</p>
+				<p class="fragment">&gt;&gt; valid JavaScript is valid TypeScript (!)</p>
+			</section>
+
+			<section>
+				<h3>TypeScript in a nutshell</h3>
+				<p>Optional Types</p>
+				<pre>JavaScript</pre>
+				<pre><code class=" javascript hljs" data-trim>
+function concat(a, b) {
+	return a + b;
+}
+function square(a, b) {
+	return a * b;
+}
+				</code></pre>
+				<pre>TypeScript</pre>
+				<pre><code class=" javascript hljs" data-trim>
+function concat(a : string, b : string) : string {
+	return a + b;
+}
+function square(a : number, b : number) : number {
+	return a * b;
+}
+				</code></pre>
+			</section>
+
+			<section>
+				<h3>TypeScript in a nutshell</h3>
+				<p>Optional lightweight modules</p>
+				<pre>JavaScript</pre>
+				<pre><code class=" javascript hljs" data-trim>
+var module = (function () {
+return {
+	square: ...
+};
+})();
+				</code></pre>
+				<pre>TypeScript</pre>
+				<pre><code class=" javascript hljs" data-trim>
+module utils {
+export class Square {
+	...
+}
+}
+				</code></pre>
+			</section>
+
+
+			<section>
+				<section>
+					<h3>TypeScript in a nutshell</h3>
+					<p>Classes</p>
+					<pre>JavaScript</pre>
+					<pre><code class=" javascript hljs" data-trim>
+var Car = (function () {
+    function Car(brand, model) {
+    	this.brand = brand; this.model = model;
+    }
+    Car.prototype.label = function() {
+    	return this.brand + " " + this.model;
+    };
+    return Car;
+})();
+					</code></pre>
+				</section>
+				<section>
+					<pre>TypeScript</pre>
+					<pre><code class=" javascript hljs" data-trim>
+class Car {
+    private brand : string; private label : string;
+    constructor(brand : string, label : string) {
+    	this.brand = brand; this.label = label;
+    }
+    label() {
+    	return this.brand + " " + this.label;
+    }
+}
+				</code></pre>
+				</section>
+			</section>
+
+			<section>
+				<h3>TypeScript in a nutshell</h3>
+				<p>Interfaces</p>
+				<pre><code class="hljs typescript" data-trim>
+interface CarConfig {
+    wheels: boolean;
+    color: string;
+}
+
+class Car implements CarConfig {
+    constructor (public wheels: boolean, public color: string) {
+    	...
+    }
+}
+				</code></pre>
+			</section>
+
+			<section>
+				<h3>TypeScript in a nutshell</h3>
+				<p>Decorators</p>
+				<pre><code class=" javascript hljs" data-trim>
+@decorator
+class Class {
+	...
+}
+
+function decorator(target) {
+	// do some stuff
+}
+				</code></pre>
+			</section>
+
+			<section>
+				<h3>TypeScript in a nutshell</h3>
+				<p>Minimal Lambdas</p>
+				<pre>JavaScript</pre>
+				<pre><code class=" javascript hljs" data-trim>
+function sum(a, b) {
+	return a + b;
+}
+function concat(a, b, c) {
+	return [a, b, c];
+}
+				</code></pre>
+				<pre>TypeScript</pre>
+				<pre><code class=" javascript hljs" data-trim>
+(a, b) => (a + b);
+(a, b, c) => [a, b, c];
+				</code></pre>
+			</section>
+
+			<section>
+				<h3>TypeScript in a nutshell</h3>
+				<p>TypeScript to JavaScript ?</p>
+				<ul class="fragment">
+					<li>TypeScript is <i>transpiled</i> to JavaScript <i>before</i> runtime</li>
+					<li>everything not needed at runtime is stripped beforehand i.e. typings</li>
+					<li>JS generation for TypeScript features</li>
+					<li>JS code optimization built-in</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>TypeScript in a nutshell</h3>
+				<p>So why TypeScript ?</p>
+				<ul class="fragment">
+					<li>introduces compile step</li>
+					<li>useful syntactic additions</li>
+					<li>backwards-compatible</li>
+					<li>professional tooling and IDE support</li>
+					<li>growing community</li>
+					<li>many available typings (`tsd`) made available by popular libs</li>
+					<li>sponsored and driven by Microsoft</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Angular2 Overview</h3>
+				<ul class="fragment">
+					<li>Platform independent: Browsers, Web Worker, Native Apps, Server-side rendering</li>
+					<li>Uses ShadowDOM</li>
+					<li>Supports <b>TypeScript</b>, JavaScript and Dart</li>
+					<li>Component-Only (!) driven development, each component has ShadowDOM</li>
+					<li>Uses <i>JavaScript ES2015</i></li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Angular2: A basic Component</h3>
+				<p>App Main <pre>app/app.component.ts</pre></p>
+				<pre><code class="hljs typescript" data-trim>
+import { Component } from '@angular/core';
+@Component({
+  selector: 'my-component',
+  templateUrl: 'my-component.html',
+  styleUrls: [ 'my-component.css' ]
+})
+export class MyComponent { }
+				</code></pre>
+			</section>
+
+			<section>
+				<h3>Angular2: Component Hierarchy</h3>
+				<blockquote>
+					&ldquo;Angular2 Apps are built by creating a component tree. The main view is the root component, each child component is responsible for its representation, reactivity and styling - it acts as a <i>view</i>. &rdquo;
+					</blockquote>
+			</section>
+
+			<section>
+				<h3>Angular2: Component Hierarchy</h3>
+				<img width="100%" height="auto" data-src="/images/component-tree.png">
+			</section>
+
+			<section>
+				<h3>Angular2: Component Tree Basics</h3>
+				<pre>Child Component</pre>
+				<pre><code class="hljs typescript" data-trim>
+import { Component } from '@angular/core';
+@Component({
+  selector: 'my-component',
+  templateUrl: 'my-component.html',
+})
+export class ChildComponent { ... }
+				</code></pre>
+				<pre>Parent Component</pre>
+				<pre><code class="hljs typescript" data-trim>
+import { Component } from '@angular/core';
+import { ChildComponent } from './my.component';
+@Component({
+  selector: 'my-app',
+  templateUrl: 'my-app.html',
+  directives: [ ChildComponent ]
+})
+export class ParentComponent { ... }
+				</code></pre>
+			</section>
+
+			<section>
+				<h3>Angular2: Data Binding</h3>
+				<blockquote>
+					&ldquo;Angular2 usually employs single-data binding. Templates display application data via <i>interpolation</i> and <i>bindings</i>. User interaction in the view yield <i>events</i> to update application data in the component.&rdquo;
+					</blockquote>
+			</section>
+
+			<section>
+				<h3>Angular2: Data Binding</h3>
+				<img width="100%" height="auto" data-src="/images/data-binding.png">
+			</section>
+
+			<section>
+				<h3>Angular2: Data Binding</h3>
+				<pre>Event Binding</pre>
+				<pre><code class="hljs html" data-trim>
+<button (click)="submit()">
+	Submit
+</button>
+				</code></pre>
+
+				<pre>Attribute Binding</pre>
+				<pre><code class="hljs html" data-trim>
+ <img [attr.src]="./img/image.png" />
+				</code></pre>
+
+				<pre>Class Binding</pre>
+				<pre><code class="hljs html" data-trim>
+<p [class.active]="isActive"></p>
+<p [ngClass]="{ active: isActive }"></p>
+				</code></pre>
+
+				<pre>Style Binding</pre>
+				<pre><code class="hljs html" data-trim>
+<p [style.color]="activeColor"></p>
+<p [ngStyle]="{ color: activeColor}"></p>
+				</code></pre>
+			</section>
+
+			<section>
+				<h3>Angular2: Services</h3>
+				<p>A service is a class with narrow purpose injectable by any component</p>
+				<pre><code class="hljs typescript" data-trim>
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/core';
+@Injectable()
+export class BackendService {
+	constructor(private http : Http) {}
+	...
+}
+				</code></pre>
+
+				<pre><code class="hljs typescript" data-trim>
+import { Component } from '@angular/core';
+import { BackendService } from './backend.service';
+@Component({
+  selector: 'my-app',
+  templateUrl: 'my-app.html',
+  providers: [ BackendService ]
+})
+export class MyComponent {
+	constructor(private b: BackendService) { ... }
+}
+				</code></pre>
+			</section>
+
+			<section>
+				<h3>Angular2: Pipes</h3>
+				<p>A <i>pipe</i> is used to transform data provided by the component within the template. Angular2 has useful pipes built-in:</p>
+
+				<pre><code class="hljs html" data-trim>
+<span>{{ 'terms' | uppercase }}</span>
+<!-- 'TERMS' -->
+
+<span>{{ new Date() | date:'ddMMyyyy' }}</span>
+<!-- using locale de-de: '21.09.2016' -->
+
+<span>{{ 0.4711 | percent:'.2' }}</span>
+<!-- '41,11%' -->
+
+				</code></pre>
+			</section>
+
+			<section>
+				<section>
+					<h3>Angular2 Enhanced Features</h3>
+					<p>Angular2 features reactive programming extensions using <i>RxJs</i> built around the concept of <i>Observables</i>.</p>
+					<ul class="fragment">
+						<li>Observable = Publish + Subscribe Chain</li>
+						<li>Angular can emit Events as Observables</li>
+						<li>Angular uses Observables in its public API, i.e. Http</li>
+					</ul>
+				</section>
+				<section>
+					<pre>pizza.component.ts</pre>
+					<pre><code class="hljs typescript" data-trim>
+import {Component} from '@angular/core';
+import {Http, Response} from '@angular/http';
+import {Observable} from 'rxjs/Rx';
+
+@Component({
+  selector: 'demo-app',
+  templateUrl: 'pizza.component.html'
+})
+export class PizzaComponent {
+  public pizzas;
+  constructor(private http: Http) { }
+
+  grabPizzas() {
+    this.http.get('/shop/pizzas/all/')
+      .map((res:Response) => res.json())
+      .subscribe( data => { this.pizzas = data} );
+  }
+}
+	  				</code></pre>
+				</section>
+				<section>
+					<pre>pizza.component.html</pre>
+					<pre><code class="hljs html" data-trim>
+<h1>Pizza Time</h1>
+<div class="pizza" *ngFor="var pizza in pizzas | async">
+	{{ pizza.name }}
+</div>
+	  				</code></pre>
+				</section>
+			</section>
+
+			<section>
+				<h3>Angular2 Core Features</h3>
+				<ul>
+					<li>Components, Services</li>
+					<li>Dependency Injection</li>
+					<li>Data-binding and change detection</li>
+					<li>Template Engine, Pipes</li>
+					<li>Form handling</li>
+					<li>Router module</li>
+					<li>Unit test support</li>
+					<li>E2E Test support</li>
+					<li>Reactive Programming Event Streams: rxjs</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>AngularJS vs Angular2</h3>
+				<table>
+					<tr>
+						<th>Features</th>
+						<th>AngularJS 1.x</th>
+						<th>Angular 2</th>
+					</tr>
+					<tr>
+						<td>Dependency Injection</td>
+						<td>&oplus;</td>
+						<td>&oplus;</td>
+					</tr>
+					<tr>
+						<td>Template Engine</td>
+						<td>&oplus;</td>
+						<td>&oplus;</td>
+					</tr>
+					<tr>
+						<td>Interpolation</td>
+						<td>&oplus;</td>
+						<td>&oplus;</td>
+					</tr>
+					<tr>
+						<td>Class- Style- Attr- Bindings</td>
+						<td>&oplus;</td>
+						<td>&oplus;</td>
+					</tr>
+					<tr>
+						<td>Services</td>
+						<td>&oplus;</td>
+						<td>&oplus;</td>
+					</tr>
+					<tr>
+						<td>Directives</td>
+						<td>&oplus;</td>
+						<td class="fragment highlight-red">&ominus;</td>
+					</tr>
+					<tr>
+						<td>Controllers</td>
+						<td>&oplus;</td>
+						<td  class="fragment highlight-red">&ominus;</td>
+					</tr>
+					<tr>
+						<td>Components</td>
+						<td>&oplus; (1.5+)</td>
+						<td>&oplus;</td>
+					</tr>
+
+				</table>
+			</section>
+
+			<section>
+				<h3>Angular2: The State of the Art?</h3>
+				<ul>
+					<li>Finales Release 2.0.0 erschienen am 15.09.2016</li>
+					<li>substantielle Neuerungen und Optimierungen in Angular 2.x</li>
+					<li>Offizielle Doku derzeit noch lückenhaft</li>
+					<li>Rückwärtsinkompatibel zu Angular JS 1.x</li>
+					<li>Migrationspfad nicht realistisch für komplexe Projekte</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Sources</h3>
+				<ul class="sources">
+					<li><a href="http://blog.thoughtram.io/exploring-angular-2/">ThoughtRAM, <i>Exploring Angular 2 Blog</i></a></li>
+					<li><a href="http://alva.ro/talks/typescript/#/">Alvaro J. Genial, <i>TypeScript in a nutshell</i></a></li>
+					<li>Thomasz Ducin, <i>JavaScript + Java = TypeScript</i>, EnterJS 2016</li>
+					<li>Michaela Lehr, <i>Erste Schritte in Angular 2</i>, EnterJS 2016</li>
+					<li>Sebastian Müller, <i>Data Flow Patterns in Angular 2</i></li>
+					<li>Pascal Precht, <i>Angular 2 Change Detection Explained</i>, EnterJS 2016</li>
+					<li>Sebastian Springer, <i>Reactive Programming</i>, EnterJS 2016</li>
+				</ul>
+
+			</section>
+
+
+				<section>
+					<section>
+						<h3>Backup: Angular2 by Example</h3>
+						<p>Configure NodeJS</p>
+						<pre><code class="json" data-trim>
+{
+  "name": "angular2-cofinpro-presentation",
+  "version": "0.0.1",
+  "dependencies": {
+    "@angular/common": "2.0.0-rc.6",
+    "@angular/compiler": "2.0.0-rc.6",
+    "@angular/compiler-cli": "0.6.0",
+    "@angular/core": "2.0.0-rc.6",
+    "@angular/forms": "2.0.0-rc.6",
+    "@angular/http": "2.0.0-rc.6",
+    "@angular/platform-browser": "2.0.0-rc.6",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.6",
+    "@angular/router": "3.0.0-rc.2",
+    "@angular/upgrade": "2.0.0-rc.6",
+    "rxjs": "5.0.0-beta.11",
+    "systemjs": "0.19.27",
+	}
+					</code></pre>
+				</section>
+				<section>
+					<pre><code class="json" data-trim>
+"devDependencies": {
+	"concurrently": "^2.2.0",
+	"lite-server": "^2.2.2",
+	"hljs typescript": "^1.8.10",
+	"typings":"^1.3.2"
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Angular2 by Example</h3>
+					<p>Configure TypeScript</p>
+					<pre><code class="json" data-trim>
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": false,
+    "noImplicitAny": false
+  }
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Angular2 by Example</h3>
+					<p>App Main <pre>app/app.module.ts</pre></p>
+					<pre><code class="hljs typescript" data-trim>
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+@NgModule({
+imports: [ BrowserModule ]
+})
+export class AppModule { }
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Angular2 by Example</h3>
+					<p>App Main <pre>app/app.component.ts</pre></p>
+					<pre><code class="hljs typescript" data-trim>
+import { Component } from '@angular/core';
+@Component({
+  selector: 'my-app',
+  template: '<p>Angular 2 example template</p>'
+})
+export class AppComponent { }
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Angular2 by Example</h3>
+					<p>App Main again <pre>app/app.module.ts</pre></p>
+					<pre><code class="hljs typescript" data-trim>
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent }   from './app.component';
+@NgModule({
+  imports:      [ BrowserModule ],
+  declarations: [ AppComponent ]
+})
+export class AppModule { }
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Angular2 by Example</h3>
+					<p>Angular Bootstrapping <pre>app/main.ts</pre></p>
+					<pre><code class="hljs typescript" data-trim>
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AppModule } from './app.module';
+const platform = platformBrowserDynamic();
+platform.bootstrapModule(AppModule);
+					</code></pre>
+				</section>
+            </section>
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+                multiplex: {
+                    // Example values. To generate your own, see the socket.io server instructions.
+                    "secret": "14748297228917382396",
+                    "socketId": "9815069a968d3574",
+                    "url": 'http://192.168.178.22:1948' // Location of socket.io server
+                },
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+                    { src: '//cdn.socket.io/socket.io-1.3.5.js', async: true },
+                    { src: 'plugin/multiplex/master.js', async: true },
+                    { src: 'plugin/multiplex/client.js', async: true },
+                    // and if you want speaker notes
+                    { src: 'plugin/notes-server/client.js', async: true },
+					// { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
