@@ -1,4 +1,17 @@
-# Web frontend development with TypeScript + Angular2
+# Slides: Web frontend development with TypeScript + Angular2
+
+Topics:
+
+* Why AngularJS?
+* AngularJS in a nutshell
+* TypeScript in a nutshell
+* Angular 2 Overview
+* Angular 2 Components
+* Angular 2 Data bindings
+* Angular 2 Core Features
+* Angular 2 Quo vadis?
+
+Reveal.js Presentation.
 
 # reveal.js [![Build Status](https://travis-ci.org/hakimel/reveal.js.svg?branch=master)](https://travis-ci.org/hakimel/reveal.js) <a href="https://slides.com?ref=github"><img src="https://s3.amazonaws.com/static.slid.es/images/slides-github-banner-320x40.png?1" alt="Slides" width="160" height="20"></a>
 
