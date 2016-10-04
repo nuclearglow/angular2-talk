@@ -49,7 +49,12 @@
 	font-size: 40px;
 }
 
+.reveal section table {
+    font-size: 80%;
+}
+
 /* Print PDF Fixes */
+
 .print-pdf section {
 	/* TODO: fix */;
 	margin-bottom: 100px;
@@ -67,6 +72,6 @@
 	display: none;
 }
 
-.reveal section table {
-	font-size: 80%;
+.print-pdf .reveal .slides section {
+    margin-top: 200px !important;
 }
